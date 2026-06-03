@@ -3,6 +3,16 @@ import { useState, useEffect, useMemo, useCallback } from 'react'
 // ─── Constantes ───────────────────────────────────────────────
 const STATUTS = ['Brouillon', 'Envoyée', 'Relancée', 'Entretien', 'Offre reçue', 'Refus', 'Retirée']
 const TYPES = ['Stage', 'Alternance', 'CDI', 'CDD', 'Freelance']
+const SOURCES = ['Spontanée', 'Site carrière', 'LinkedIn', 'Job board', 'Cooptation', 'Forum / salon', 'Autre']
+const SOURCE_ICONS = {
+  'Spontanée': '✉️',
+  'Site carrière': '🏢',
+  'LinkedIn': '💼',
+  'Job board': '🌐',
+  'Cooptation': '🤝',
+  'Forum / salon': '🎪',
+  'Autre': '📌',
+}
 const STORAGE_KEY = 'kandidat_data'
 
 const STATUT_COLORS = {
@@ -20,6 +30,7 @@ const emptyCandidate = () => ({
   entreprise: '',
   poste: '',
   type: 'Stage',
+  source: 'Spontanée',
   dateCandidature: new Date().toISOString().slice(0, 10),
   statut: 'Brouillon',
   lienOffre: '',
@@ -64,8 +75,8 @@ function saveData(data) {
 }
 
 function exportCSV(candidatures) {
-  const headers = ['Entreprise', 'Poste', 'Type', 'Date candidature', 'Statut', 'Lien offre', 'Contact nom', 'Contact email', 'Notes', 'Prochaines étapes', 'Date relance', 'Date entretien']
-  const rows = candidatures.map(c => [c.entreprise, c.poste, c.type, c.dateCandidature, c.statut, c.lienOffre, c.contactNom, c.contactEmail, c.notes, c.prochainesEtapes, c.dateRelance, c.dateEntretien].map(v => `"${(v || '').replace(/"/g, '""')}"`).join(','))
+  const headers = ['Entreprise', 'Poste', 'Type', 'Source', 'Date candidature', 'Statut', 'Lien offre', 'Contact nom', 'Contact email', 'Notes', 'Prochaines étapes', 'Date relance', 'Date entretien']
+  const rows = candidatures.map(c => [c.entreprise, c.poste, c.type, c.source, c.dateCandidature, c.statut, c.lienOffre, c.contactNom, c.contactEmail, c.notes, c.prochainesEtapes, c.dateRelance, c.dateEntretien].map(v => `"${(v || '').replace(/"/g, '""')}"`).join(','))
   const csv = [headers.join(','), ...rows].join('\n')
   download(csv, 'kandidat_export.csv', 'text/csv')
 }
@@ -175,6 +186,12 @@ function CandidatureForm({ candidature, onSave, onCancel }) {
             </select>
           </div>
           <div style={styles.formGroup}>
+            <label style={styles.label}>Source / canal</label>
+            <select style={styles.input} value={form.source || 'Spontanée'} onChange={handleChange('source')}>
+              {SOURCES.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </div>
+          <div style={styles.formGroup}>
             <label style={styles.label}>Statut</label>
             <select style={styles.input} value={form.statut} onChange={handleChange('statut')}>
               {STATUTS.map(s => <option key={s} value={s}>{s}</option>)}
@@ -243,6 +260,7 @@ function CandidatureCard({ candidature, onEdit, onDelete }) {
 
       <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginTop: '10px', fontSize: '13px', color: '#71717a' }}>
         <span>📋 {candidature.type}</span>
+        {candidature.source && <span>{SOURCE_ICONS[candidature.source] || '📌'} {candidature.source}</span>}
         <span>📅 {candidature.dateCandidature}</span>
         {candidature.contactNom && <span>👤 {candidature.contactNom}</span>}
         {candidature.lienOffre && (
@@ -293,6 +311,7 @@ export default function App() {
   const [editing, setEditing] = useState(null) // null = fermé, objet = édition/création
   const [filterStatut, setFilterStatut] = useState('Tous')
   const [filterType, setFilterType] = useState('Tous')
+  const [filterSource, setFilterSource] = useState('Tous')
   const [sortBy, setSortBy] = useState('date-desc')
   const [search, setSearch] = useState('')
   const [confirmDelete, setConfirmDelete] = useState(null)
@@ -315,6 +334,7 @@ export default function App() {
 
     if (filterStatut !== 'Tous') list = list.filter(c => c.statut === filterStatut)
     if (filterType !== 'Tous') list = list.filter(c => c.type === filterType)
+    if (filterSource !== 'Tous') list = list.filter(c => c.source === filterSource)
     if (search.trim()) {
       const q = search.toLowerCase()
       list = list.filter(c =>
@@ -335,7 +355,7 @@ export default function App() {
     })
 
     return list
-  }, [candidatures, filterStatut, filterType, sortBy, search])
+  }, [candidatures, filterStatut, filterType, filterSource, sortBy, search])
 
   const handleSave = useCallback((form) => {
     setCandidatures(prev => {
@@ -410,6 +430,10 @@ export default function App() {
         <select style={styles.input} value={filterType} onChange={e => setFilterType(e.target.value)}>
           <option value="Tous">Tous les types</option>
           {TYPES.map(t => <option key={t} value={t}>{t}</option>)}
+        </select>
+        <select style={styles.input} value={filterSource} onChange={e => setFilterSource(e.target.value)}>
+          <option value="Tous">Toutes les sources</option>
+          {SOURCES.map(s => <option key={s} value={s}>{s}</option>)}
         </select>
         <select style={styles.input} value={sortBy} onChange={e => setSortBy(e.target.value)}>
           <option value="date-desc">Date ↓</option>

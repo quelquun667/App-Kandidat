@@ -2,13 +2,14 @@
 
 Tracker de candidatures 100% local — pour ne plus jamais perdre le fil de ses recherches de stage, alternance ou emploi.
 
-![Kandidat](assets/icon.png)
+<img src="assets/icon.png" alt="Kandidat" width="120" />
 
 ## Fonctionnalités
 
-- **Suivi complet** — Entreprise, poste, type (stage / alternance / CDI / CDD / freelance), date, statut, lien offre, contact RH, notes et prochaines étapes
+- **Suivi complet** — Entreprise, poste, type (stage / alternance / CDI / CDD / freelance), source, date, statut, lien offre, contact RH, notes et prochaines étapes
+- **Source / canal** — Candidature spontanée, site carrière, LinkedIn, job board, cooptation, forum/salon ou autre
 - **Pipeline visuel** — 7 statuts : Brouillon → Envoyée → Relancée → Entretien → Offre reçue / Refus / Retirée
-- **Filtres et tri** — Par statut, type, date, recherche textuelle
+- **Filtres et tri** — Par statut, type, source, date, recherche textuelle
 - **Rappels visuels** — Alertes pour les relances en retard, relances à venir (3j), entretiens à venir (7j)
 - **Export** — CSV ou JSON en un clic
 - **100% local** — Données stockées sur votre machine, aucun serveur, aucun compte
