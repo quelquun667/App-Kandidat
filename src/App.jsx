@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 
 // ─── Constantes ───────────────────────────────────────────────
 const STATUTS = ['Brouillon', 'Envoyée', 'Relancée', 'Entretien', 'Offre reçue', 'Refus', 'Retirée']
@@ -315,6 +315,8 @@ export default function App() {
   const [sortBy, setSortBy] = useState('date-desc')
   const [search, setSearch] = useState('')
   const [confirmDelete, setConfirmDelete] = useState(null)
+  const [importMsg, setImportMsg] = useState(null) // { ok: bool, text: string }
+  const fileInputRef = useRef(null)
 
   // Chargement initial (async pour Electron, sync fallback pour navigateur)
   useEffect(() => {
@@ -375,6 +377,46 @@ export default function App() {
     setConfirmDelete(null)
   }, [])
 
+  // Import JSON en mode fusion : ajoute les nouvelles, met à jour celles
+  // partageant le même id, conserve le reste.
+  const handleImportFile = (e) => {
+    const file = e.target.files?.[0]
+    e.target.value = '' // permet de réimporter le même fichier
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = () => {
+      let parsed
+      try {
+        parsed = JSON.parse(reader.result)
+      } catch {
+        setImportMsg({ ok: false, text: 'Fichier JSON invalide.' })
+        return
+      }
+      if (!Array.isArray(parsed)) {
+        setImportMsg({ ok: false, text: "Le fichier ne contient pas une liste de candidatures." })
+        return
+      }
+      const byId = new Map(candidatures.map(c => [c.id, c]))
+      let added = 0, updated = 0, ignored = 0
+      for (const item of parsed) {
+        if (!item || typeof item !== 'object' || (!item.entreprise && !item.poste)) {
+          ignored++
+          continue
+        }
+        const c = { ...emptyCandidate(), ...item }
+        if (!c.id) c.id = crypto.randomUUID()
+        if (byId.has(c.id)) updated++; else added++
+        byId.set(c.id, c)
+      }
+      setCandidatures(Array.from(byId.values()))
+      setImportMsg({
+        ok: true,
+        text: `Import réussi : ${added} ajoutée(s), ${updated} mise(s) à jour${ignored ? `, ${ignored} ignorée(s)` : ''}.`,
+      })
+    }
+    reader.readAsText(file)
+  }
+
   const urgentAlerts = useMemo(() => {
     return candidatures.filter(c => {
       const dR = daysUntil(c.dateRelance)
@@ -396,11 +438,36 @@ export default function App() {
           </p>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="application/json,.json"
+            onChange={handleImportFile}
+            style={{ display: 'none' }}
+          />
+          <button onClick={() => fileInputRef.current?.click()} style={styles.btnSecondary} title="Importer un fichier JSON exporté">📥 Importer</button>
           <button onClick={() => exportCSV(candidatures)} style={styles.btnSecondary} title="Exporter en CSV">📄 CSV</button>
           <button onClick={() => exportJSON(candidatures)} style={styles.btnSecondary} title="Exporter en JSON">📦 JSON</button>
           <button onClick={() => setEditing(emptyCandidate())} style={styles.btnPrimary}>+ Nouvelle candidature</button>
         </div>
       </header>
+
+      {/* Message d'import */}
+      {importMsg && (
+        <div
+          onClick={() => setImportMsg(null)}
+          title="Cliquer pour masquer"
+          style={{
+            ...styles.alertBanner,
+            cursor: 'pointer',
+            background: importMsg.ok ? '#10b98111' : '#ef444411',
+            borderColor: importMsg.ok ? '#10b98133' : '#ef444433',
+            color: importMsg.ok ? '#10b981' : '#ef4444',
+          }}
+        >
+          <span style={{ fontWeight: 600 }}>{importMsg.ok ? '✅' : '⚠️'} {importMsg.text}</span>
+        </div>
+      )}
 
       {/* Stats */}
       <StatsBar candidatures={candidatures} />

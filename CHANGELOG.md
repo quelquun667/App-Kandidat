@@ -2,6 +2,13 @@
 
 Toutes les modifications notables de Kandidat sont documentées ici.
 
+## [1.2.0] - 2026-06-03
+
+### Ajouté
+
+- Import d'un fichier JSON précédemment exporté, en mode fusion (ajout des nouvelles candidatures, mise à jour de celles partageant le même identifiant, sans doublon ni perte)
+- Bouton « Importer » dans l'en-tête et message de confirmation après import
+
 ## [1.1.0] - 2026-06-03
 
 ### Ajouté

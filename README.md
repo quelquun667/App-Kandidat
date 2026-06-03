@@ -22,7 +22,7 @@
 - **Pipeline visuel** — 7 statuts : Brouillon → Envoyée → Relancée → Entretien → Offre reçue / Refus / Retirée
 - **Filtres et tri** — Par statut, type, source, date, recherche textuelle
 - **Rappels visuels** — Alertes pour les relances en retard, relances à venir (3j), entretiens à venir (7j)
-- **Export** — CSV ou JSON en un clic
+- **Import / export** — Export CSV ou JSON en un clic ; réimport d'un export JSON en fusion (sans perte, sans doublon)
 - **100% local** — Données stockées sur votre machine, aucun serveur, aucun compte
 - **Dark mode** — Interface sombre et soignée
 
