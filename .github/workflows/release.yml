@@ -80,26 +80,25 @@ jobs:
       - name: Generate release body
         id: body
         run: |
-          TAG=${{ github.ref_name }}
           VERSION=${{ steps.version.outputs.version }}
-          cat <<'BODY_EOF' > release_body.md
-          ## Kandidat $TAG
-
-          ### Installation
-
-          | Système | Fichier |
-          |---------|---------|
-          | Windows | `Kandidat Setup ${VERSION}.exe` |
-          | macOS | `Kandidat-${VERSION}.dmg` |
-          | Linux | `Kandidat-${VERSION}.AppImage` ou `kandidat_${VERSION}_amd64.deb` |
-
-          ### Changelog
-
-          $(sed -n "/## \[${VERSION}\]/,/## \[/p" CHANGELOG.md | head -n -1)
-
-          ---
-          [README](../../blob/main/README.md) | [Changelog complet](../../blob/main/CHANGELOG.md)
-          BODY_EOF
+          {
+            echo "## Kandidat v${VERSION}"
+            echo
+            echo "### Installation"
+            echo
+            echo "| Système | Fichier |"
+            echo "|---------|---------|"
+            echo "| Windows | \`Kandidat Setup ${VERSION}.exe\` |"
+            echo "| macOS | \`Kandidat-${VERSION}.dmg\` |"
+            echo "| Linux | \`Kandidat-${VERSION}.AppImage\` ou \`kandidat_${VERSION}_amd64.deb\` |"
+            echo
+            echo "### Changelog"
+            echo
+            sed -n "/## \[${VERSION}\]/,/## \[/p" CHANGELOG.md | head -n -1
+            echo
+            echo "---"
+            echo "[README](../../blob/main/README.md) | [Changelog complet](../../blob/main/CHANGELOG.md)"
+          } > release_body.md
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4
