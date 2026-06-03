@@ -1,0 +1,29 @@
+# Dépendances
+node_modules/
+
+# Build & artefacts
+dist/
+release/
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Variables d'environnement
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.vscode/
+.idea/
+*.swp
+
+# Claude / outils IA (ne pas publier)
+CLAUDE.md
+.claude/
