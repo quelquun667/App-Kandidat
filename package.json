@@ -1,6 +1,6 @@
 {
   "name": "kandidat",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Tracker de candidatures 100% local",
   "author": { "name": "Kandidat", "email": "noahgranizo@gmail.com" },
   "main": "electron/main.js",

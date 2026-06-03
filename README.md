@@ -1,14 +1,26 @@
-# Kandidat
+<p align="center">
+  <img src="assets/icon.png" alt="Kandidat" width="120" />
+</p>
 
-Tracker de candidatures 100% local — pour ne plus jamais perdre le fil de ses recherches de stage, alternance ou emploi.
+<h1 align="center">Kandidat</h1>
 
-![Kandidat](assets/icon.png)
+<p align="center">
+  Tracker de candidatures 100% local — pour ne plus jamais perdre le fil de ses recherches de stage, alternance ou emploi.
+</p>
+
+<p align="center">
+  <a href="https://github.com/quelquun667/App-Kandidat/releases/latest"><img src="https://img.shields.io/github/v/release/quelquun667/App-Kandidat?label=version" alt="Dernière version" /></a>
+  <a href="https://github.com/quelquun667/App-Kandidat/releases"><img src="https://img.shields.io/github/downloads/quelquun667/App-Kandidat/total?label=téléchargements" alt="Téléchargements" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/quelquun667/App-Kandidat" alt="Licence" /></a>
+  <img src="https://img.shields.io/badge/plateformes-Windows%20%7C%20macOS%20%7C%20Linux-blue" alt="Plateformes" />
+</p>
 
 ## Fonctionnalités
 
-- **Suivi complet** — Entreprise, poste, type (stage / alternance / CDI / CDD / freelance), date, statut, lien offre, contact RH, notes et prochaines étapes
+- **Suivi complet** — Entreprise, poste, type (stage / alternance / CDI / CDD / freelance), source, date, statut, lien offre, contact RH, notes et prochaines étapes
+- **Source / canal** — Candidature spontanée, site carrière, LinkedIn, job board, cooptation, forum/salon ou autre
 - **Pipeline visuel** — 7 statuts : Brouillon → Envoyée → Relancée → Entretien → Offre reçue / Refus / Retirée
-- **Filtres et tri** — Par statut, type, date, recherche textuelle
+- **Filtres et tri** — Par statut, type, source, date, recherche textuelle
 - **Rappels visuels** — Alertes pour les relances en retard, relances à venir (3j), entretiens à venir (7j)
 - **Export** — CSV ou JSON en un clic
 - **100% local** — Données stockées sur votre machine, aucun serveur, aucun compte
@@ -85,6 +97,12 @@ Les candidatures sont sauvegardées localement dans :
 - **Linux** : `~/.config/kandidat/data/candidatures.json`
 
 Les données persistent même en cas de mise à jour ou de réinstallation.
+
+## Star History
+
+<a href="https://star-history.com/#quelquun667/App-Kandidat&Date">
+  <img src="https://api.star-history.com/svg?repos=quelquun667/App-Kandidat&type=Date" alt="Star History Chart" width="600" />
+</a>
 
 ## Licence
 

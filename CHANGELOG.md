@@ -2,6 +2,14 @@
 
 Toutes les modifications notables de Kandidat sont documentées ici.
 
+## [1.1.0] - 2026-06-03
+
+### Ajouté
+
+- Champ **source / canal** pour chaque candidature : Spontanée, Site carrière, LinkedIn, Job board, Cooptation, Forum / salon, Autre
+- Filtre par source et colonne « Source » dans l'export CSV
+- Icône de source affichée sur chaque carte de candidature
+
 ## [1.0.0] - 2026-03-22
 
 ### Ajouté
